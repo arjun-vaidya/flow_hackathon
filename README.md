@@ -45,8 +45,8 @@ Every sponsor must be used in the working project. These are planned responsibil
 ## Working together
 
 ```sh
-git clone https://github.com/arjun-vaidya/pull.git
-cd pull
+git clone https://github.com/arjun-vaidya/flow_hackathon.git
+cd flow_hackathon
 git switch -c feature/your-task
 ```
 
