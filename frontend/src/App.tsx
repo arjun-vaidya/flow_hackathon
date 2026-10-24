@@ -166,16 +166,79 @@ export default function App() {
         />
       </Routes>
       <footer className="footer">
-        <span>
-          <span className="small-logo">∇</span> Signals before the story.
-        </span>
-        <span>
-          Fictional demo data <span className="footer-dot">·</span> No live
-          research connected
-        </span>
-        <button onClick={() => setAbout(true)}>
-          About this workspace <ArrowRight size={13} />
-        </button>
+        <div className="footer-main">
+          <div className="footer-intro">
+            <Link to="/" className="footer-brand" aria-label="Gradient home">
+              <span className="footer-brand-icon">
+                <Layers3 size={17} strokeWidth={1.5} />
+              </span>
+              <span>Gradient</span>
+            </Link>
+            <p>
+              Venture intelligence connecting technical builders, public demand,
+              and the evidence behind your next conversation.
+            </p>
+          </div>
+          <nav className="footer-column" aria-label="Platform">
+            <h2>PLATFORM</h2>
+            <Link to="/">Signal discovery</Link>
+            <Link to="/shortlist">Builder shortlist</Link>
+            <Link to="/saved">Saved builders</Link>
+          </nav>
+          <nav className="footer-column" aria-label="Project">
+            <h2>PROJECT</h2>
+            <button onClick={() => setAbout(true)}>About Gradient</button>
+            <a
+              href="https://github.com/arjun-vaidya/flow_hackathon/blob/main/docs/PROJECT_PLAN.md"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Methodology
+            </a>
+            <a
+              href="https://github.com/arjun-vaidya/flow_hackathon/blob/main/docs/ARCHITECTURE.md"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Architecture
+            </a>
+          </nav>
+          <nav className="footer-column" aria-label="Resources">
+            <h2>RESOURCES</h2>
+            <a
+              href="https://github.com/arjun-vaidya/flow_hackathon"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Source code
+            </a>
+            <a
+              href="https://github.com/arjun-vaidya/flow_hackathon/tree/main/frontend#readme"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Documentation
+            </a>
+            <button onClick={() => setAbout(true)}>Data & limitations</button>
+          </nav>
+        </div>
+        <div className="footer-bottom">
+          <span>
+            © {new Date().getFullYear()} Gradient. Built for discovery.
+          </span>
+          <span className="footer-status">
+            <span className="status-dot" />
+            Fictional demo data · No live research connected
+          </span>
+          <a
+            href="https://github.com/arjun-vaidya/flow_hackathon/issues"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Feedback
+            <ArrowRight size={12} />
+          </a>
+        </div>
       </footer>
       <Dialog
         open={about}
@@ -242,7 +305,10 @@ function Discover() {
   }
   return (
     <main className="discovery">
-      <h1>Gradient</h1>
+      <div className="hero-brand">
+        <h1>Gradient</h1>
+        <p className="brand-subtitle">VENTURE INTELLIGENCE</p>
+      </div>
       <form
         className="search-panel"
         onSubmit={(event) => {

@@ -178,11 +178,30 @@ svg {
 
 .discovery h1 {
   text-align: center;
-  font-size: clamp(40px, 4.5vw, 64px);
+  width: fit-content;
+  font-size: clamp(64px, 7vw, 96px);
   line-height: 1.12;
-  letter-spacing: -3px;
-  margin: 24px 0 20px;
+  letter-spacing: -5px;
+  margin: 0 auto;
+  font-weight: 700;
+  color: #293126;
+  background: linear-gradient(110deg, #252925 12%, #3b4038 55%, #555d50 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-brand {
+  text-align: center;
+  margin: 10px 0 42px;
+}
+.brand-subtitle {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 10px;
   font-weight: 500;
+  letter-spacing: 4.5px;
+  color: #7c8576;
+  margin: 15px 0 0;
+  padding-left: 4.5px;
 }
 
 .search-panel {
@@ -297,33 +316,87 @@ svg {
 
 .footer {
   margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding: 23px 4%;
+  padding: 44px 4% 24px;
   border-top: 1px solid var(--line);
-  font-size: 10px;
-  color: #959d8c;
+  background: #fcfdfa;
+  color: #7f8779;
 }
-.footer > span,
-.footer > button {
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 54px;
+  max-width: 1380px;
+  margin: 0 auto;
+}
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.5px;
+  color: #293126;
+}
+.footer-brand-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: #293126;
+  color: #f2f6ed;
+}
+.footer-intro p {
+  max-width: 340px;
+  font-size: 12px;
+  line-height: 1.9;
+  margin-top: 13px;
+}
+.footer-column {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.footer-column h2 {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #939b8b;
+  margin: 5px 0 6px;
+}
+.footer-column a,
+.footer-column button {
+  padding: 0;
+  font-size: 12px;
+  color: #66705e;
+  text-align: left;
+}
+.footer a:hover,
+.footer button:hover {
+  color: #34482d;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.footer-bottom {
+  max-width: 1380px;
+  margin: 36px auto 0;
+  padding-top: 21px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 10px;
+}
+.footer-status,
+.footer-bottom a {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
 }
-.footer > button {
-  font-size: 10px;
-}
-.small-logo {
-  font-family: Georgia, serif;
-  font-size: 20px;
-  line-height: 15px;
-  color: #7f8975;
-  font-weight: bold;
-}
-.footer-dot {
-  margin: 0 2px;
+.footer-status .status-dot {
+  color: #94a383;
 }
 .research-progress {
   max-width: 840px;
@@ -1206,7 +1279,7 @@ svg {
     padding-bottom: 85px;
   }
   .discovery h1 {
-    font-size: 70px;
+    font-size: 104px;
   }
   .explore {
     margin-bottom: 80px;
@@ -1246,8 +1319,8 @@ svg {
   .builder-title p {
     font-size: 9px;
   }
-  .footer > span:nth-child(2) {
-    font-size: 9px;
+  .footer-main {
+    gap: 28px;
   }
 }
 @media (max-width: 760px) {
@@ -1275,8 +1348,15 @@ svg {
   }
 
   .discovery h1 {
-    font-size: 43px;
-    letter-spacing: -2px;
+    font-size: 66px;
+    letter-spacing: -3.5px;
+  }
+  .brand-subtitle {
+    font-size: 9px;
+    letter-spacing: 3px;
+  }
+  .hero-brand {
+    margin-bottom: 32px;
   }
 
   .search-panel {
@@ -1304,15 +1384,28 @@ svg {
   }
 
   .footer {
-    padding: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px 20px;
+    padding: 32px 20px 22px;
   }
-  .footer > span:nth-child(2) {
-    order: 3;
-    width: 100%;
-    justify-content: center;
+  .footer-main {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px 15px;
+  }
+  .footer-intro {
+    grid-column: 1 / -1;
+  }
+  .footer-column a,
+  .footer-column button {
+    font-size: 11px;
+  }
+  .footer-column h2 {
+    font-size: 9px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 28px;
+    font-size: 9px;
   }
   .page {
     width: calc(100% - 32px);
@@ -1490,7 +1583,7 @@ svg {
 }
 @media (max-width: 390px) {
   .discovery h1 {
-    font-size: 37px;
+    font-size: 60px;
   }
   .search-bottom {
     align-items: flex-start;
