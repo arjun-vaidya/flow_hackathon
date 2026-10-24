@@ -37,7 +37,8 @@ Every sponsor must be used in the working project. These are planned responsibil
 
 ## Read the plan
 
-- [Product design, architecture, and build checklist](docs/PROJECT_PLAN.md)
+- [Product design and build checklist](docs/PROJECT_PLAN.md)
+- [Architecture: stack, data flow, APIs, database, and deployment](docs/ARCHITECTURE.md)
 - [Organizer's problem tracks](docs/Deal%20Flow_%20Problem%20Tracks.md)
 - [Local requirements excerpt](docs/hackathon_requirements.txt)
 - [Official requirements](https://nyc-vc-hack.devpost.com/), [rules](https://nyc-vc-hack.devpost.com/rules), and [sponsor resources](https://nyc-vc-hack.devpost.com/resources)
