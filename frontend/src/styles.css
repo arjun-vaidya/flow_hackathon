@@ -116,44 +116,18 @@ svg {
   gap: 11px;
 }
 .about-button {
-  padding: 7px 11px;
-  border: 1px solid var(--line);
+  padding: 8px 12px;
+  border: 1px solid transparent;
   border-radius: 7px;
-  background: white;
+  background: transparent;
   color: #727a6e;
-  font-size: 12px;
+  font-size: 13px;
 }
 .about-button:hover {
   background: #f0f2ed;
+  border-color: var(--line);
 }
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-}
-.brand strong {
-  font-size: 22px;
-  letter-spacing: -0.9px;
-}
-.brand-mark {
-  width: 31px;
-  height: 33px;
-  border-radius: 8px;
-  background: #242923;
-  color: white;
-  font-family: Georgia, serif;
-  font-weight: bold;
-  font-size: 26px;
-  line-height: 33px;
-  text-align: center;
-  position: relative;
-}
-.brand-divider {
-  height: 15px;
-  width: 1px;
-  background: var(--line);
-  margin: 0 5px;
-}
+
 .main-nav {
   display: flex;
   align-items: center;
@@ -1239,9 +1213,6 @@ svg {
   }
 }
 @media (max-width: 1000px) {
-  .brand-divider {
-    display: none;
-  }
   .discovery {
     padding-top: 65px;
   }
@@ -1287,9 +1258,6 @@ svg {
     padding: 14px 20px;
     flex-wrap: wrap;
     gap: 15px;
-  }
-  .brand {
-    order: 0;
   }
 
   .main-nav {

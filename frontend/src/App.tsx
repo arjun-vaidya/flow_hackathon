@@ -120,11 +120,6 @@ export default function App() {
     <>
       <header className="topbar">
         <div className="header-left">
-          <Link className="brand" to="/" aria-label="Gradient home">
-            <span className="brand-mark">∇</span>
-            <strong>Gradient</strong>
-          </Link>
-          <span className="brand-divider" />
           <button type="button" className="about-button">
             About
           </button>
