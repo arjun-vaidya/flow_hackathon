@@ -1,4 +1,4 @@
-# Pull: product and build plan
+# Gradient: product and build plan
 
 ## Customer and hypothesis
 
@@ -14,9 +14,9 @@ Success means new, meeting-worthy opportunities with verifiable evidence and les
 
 Broad founder search is competitive. [Harmonic](https://support.harmonic.ai/en/articles/12844015-harmonic-integrations-playbook) offers thesis-driven research, monitoring, and briefs. [Evertrace](https://www.evertrace.ai/) monitors early founder signals across multiple sources. [GitDealFlow](https://gitdealflow.com/) analyzes public engineering activity. An open-source [OSS Opportunity Radar](https://github.com/wushidiguo/opportunity-radar) already mines issues for commercialization opportunities.
 
-Pull's proposed focus is the complete investor decision: connect independently expressed demand to the builder, commercial alternatives, timing, and counter-evidence, with inspectable sources. This is a differentiation hypothesis to validate, not a claim that no competitor offers it.
+Gradient's proposed focus is the complete investor decision: connect independently expressed demand to the builder, commercial alternatives, timing, and counter-evidence, with inspectable sources. This is a differentiation hypothesis to validate, not a claim that no competitor offers it.
 
-Investor guidance supports investigating adoption and community engagement beyond stars: [Bessemer](https://www.bvp.com/atlas/measuring-the-engagement-of-an-open-source-software-community) and [Unusual Ventures](https://www.unusual.vc/field-guide/series-a-fundraising-for-an-open-source-company/). These sources do not validate Pull's performance or willingness to pay.
+Investor guidance supports investigating adoption and community engagement beyond stars: [Bessemer](https://www.bvp.com/atlas/measuring-the-engagement-of-an-open-source-software-community) and [Unusual Ventures](https://www.unusual.vc/field-guide/series-a-fundraising-for-an-open-source-company/). These sources do not validate Gradient's performance or willingness to pay.
 
 ## End-to-end workflow
 

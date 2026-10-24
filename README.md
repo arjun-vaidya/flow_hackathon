@@ -1,12 +1,12 @@
-# Pull
+# Gradient
 
 **Find early technical founders through evidence of customer demand.**
 
-Pull is a sourcing assistant for pre-seed investors in AI infrastructure and developer tools. It connects public user problems to projects, their builders, and commercial context, then produces a short, evidence-backed explanation of why an investor should meet a builder now.
+Gradient is a sourcing assistant for pre-seed investors in AI infrastructure and developer tools. It connects public user problems to projects, their builders, and commercial context, then produces a short, evidence-backed explanation of why an investor should meet a builder now.
 
 Built for **Track 1: Sourcing** at [Deal Flow: NYC's First VC Hackathon](https://nyc-vc-hack.devpost.com/).
 
-> **Status: planning.** This repository contains the product design and event references. The application, integrations, evaluations, and live demo have not been implemented. Example outputs are illustrative, not verified investment leads.
+> **Status: frontend demo.** The React app in `frontend/` implements discovery, shortlisting, saved builders, evidence review, and builder briefs with clearly labeled fictional data. Backend services, sponsor integrations, and real evaluations are still planned. Example outputs are illustrative, not verified investment leads.
 
 ## The product
 
@@ -14,7 +14,7 @@ An investor enters a thesis:
 
 > Find early builders developing tools for testing and monitoring AI agents.
 
-Pull discovers relevant public projects, examines user demand, researches competitors, and returns three founder opportunities. Each brief includes:
+Gradient discovers relevant public projects, examines user demand, researches competitors, and returns three founder opportunities. Each brief includes:
 
 - The builder and what they have shipped.
 - Specific demand evidence with source links and dates.
@@ -51,7 +51,17 @@ cd flow_hackathon
 git switch -c feature/your-task
 ```
 
-Keep changes focused and open pull requests into `main`. There are no installation or run commands yet because the application has not been scaffolded.
+Keep changes focused and open pull requests into `main`.
+
+Run the frontend with Node 22.12+:
+
+```sh
+cd frontend
+npm ci
+npm run dev
+```
+
+See [frontend setup and demo limitations](frontend/README.md). Run `npm run build` for the production build and `npm test` for interaction checks.
 
 Never commit API keys, `.env` files, confidential fund documents, or raw private customer data. Use public or clearly labeled synthetic data. Access to each sponsor account must be established before building against it.
 
