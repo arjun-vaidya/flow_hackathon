@@ -17,7 +17,6 @@ import {
   Check,
   CheckCheck,
   ChevronRight,
-  Code2,
   Compass,
   Download,
   GitBranch,
@@ -352,53 +351,6 @@ function Discover() {
           ))}
         </section>
       )}
-      <section className="criteria-section">
-        <div className="section-caption">
-          <span className="eyebrow">LESS NOISE. MORE CONVICTION.</span>
-          <span>Every opportunity starts with four questions.</span>
-        </div>
-        <div className="criteria-grid">
-          {[
-            {
-              icon: Code2,
-              label: 'Something shipped',
-              text: 'A working project, beyond a compelling pitch.',
-              tag: 'PRODUCT',
-            },
-            {
-              icon: Users,
-              label: 'Someone asking',
-              text: 'Unprompted demand from people with a problem.',
-              tag: 'PULL',
-            },
-            {
-              icon: GitBranch,
-              label: 'A reason for now',
-              text: 'A recent signal that makes a meeting timely.',
-              tag: 'MOMENTUM',
-            },
-            {
-              icon: ShieldCheck,
-              label: 'A real connection',
-              text: 'A builder linked to the work, with unknowns intact.',
-              tag: 'IDENTITY',
-            },
-          ].map(({ icon: Icon, label, text, tag }) => (
-            <article key={tag}>
-              <div className="criteria-top">
-                <Icon size={20} strokeWidth={1.5} />
-                <span className="eyebrow">{tag}</span>
-              </div>
-              <h3>{label}</h3>
-              <p>{text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-      <div className="discovery-note">
-        <span className="tiny-dot" />
-        Built for curious investors. Grounded in what users actually ask for.
-      </div>
     </main>
   )
 }

@@ -348,68 +348,7 @@ svg {
 .explore > button:hover {
   background: #e9efe2;
 }
-.section-caption {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-.section-caption > span:last-child {
-  font-size: 11px;
-  color: #929a89;
-}
-.criteria-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  background: #fcfdfa;
-  overflow: hidden;
-}
-.criteria-grid article {
-  padding: 23px 23px 25px;
-  border-right: 1px solid var(--line);
-}
-.criteria-grid article:last-child {
-  border: 0;
-}
-.criteria-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 25px;
-  color: #6b7c5e;
-}
-.criteria-top .eyebrow {
-  font-size: 9px;
-  letter-spacing: 1px;
-  color: #959e8c;
-}
-.criteria-grid h3 {
-  font-size: 13px;
-  margin-bottom: 7px;
-}
-.criteria-grid p {
-  font-size: 11px;
-  line-height: 1.8;
-  color: #858d7d;
-  max-width: 185px;
-}
-.discovery-note {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  font-size: 10px;
-  color: #969e8e;
-  margin-top: 29px;
-}
-.tiny-dot {
-  width: 4px;
-  height: 4px;
-  background: #9eac91;
-  border-radius: 50%;
-}
+
 .footer {
   margin-top: auto;
   display: flex;
@@ -1335,9 +1274,7 @@ svg {
   .discovery {
     padding-top: 65px;
   }
-  .criteria-grid article {
-    padding: 20px 17px;
-  }
+
   .brief-layout {
     grid-template-columns: minmax(0, 1fr) 230px;
     gap: 20px;
@@ -1433,29 +1370,7 @@ svg {
     text-align: center;
     margin-bottom: 3px;
   }
-  .criteria-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .criteria-grid article:nth-child(2) {
-    border-right: 0;
-  }
-  .criteria-grid article:nth-child(-n + 2) {
-    border-bottom: 1px solid var(--line);
-  }
-  .criteria-top {
-    margin-bottom: 20px;
-  }
-  .criteria-grid p {
-    max-width: none;
-  }
-  .section-caption > span:last-child {
-    display: none;
-  }
-  .discovery-note {
-    text-align: center;
-    line-height: 1.8;
-    font-size: 9px;
-  }
+
   .footer {
     padding: 20px;
     flex-wrap: wrap;
