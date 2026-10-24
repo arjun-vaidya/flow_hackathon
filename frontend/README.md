@@ -1,4 +1,4 @@
-# Pull frontend
+# Gradient frontend
 
 React + TypeScript + Vite implementation of the supplied discovery, shortlist, and founder-brief designs. Uses Tailwind CSS with custom component styles, Radix dialog primitives in a shadcn-style wrapper, React Router, TanStack Query, Recharts, and Lucide icons.
 
@@ -20,7 +20,7 @@ npm test
 npm run preview
 ```
 
-For a browser smoke check, keep `npm run dev` running in another terminal and run `npm run test:browser`. The check uses installed Google Chrome in an isolated headless context and saves desktop/mobile screenshots to the ignored `test-results/` folder. Override `PULL_PREVIEW_URL` if Vite uses a different port.
+For a browser smoke check, keep `npm run dev` running in another terminal and run `npm run test:browser`. The check uses installed Google Chrome in an isolated headless context and saves desktop/mobile screenshots to the ignored `test-results/` folder. Override `GRADIENT_PREVIEW_URL` if Vite uses a different port.
 
 ## Working flows
 

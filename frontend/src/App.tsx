@@ -119,14 +119,16 @@ export default function App() {
   return (
     <>
       <header className="topbar">
-        <Link className="brand" to="/" aria-label="Pull home">
-          <span className="brand-mark">
-            p<span />
-          </span>
-          <strong>Pull</strong>
+        <div className="header-left">
+          <Link className="brand" to="/" aria-label="Gradient home">
+            <span className="brand-mark">∇</span>
+            <strong>Gradient</strong>
+          </Link>
           <span className="brand-divider" />
-          <span className="eyebrow">DISCOVERY</span>
-        </Link>
+          <button type="button" className="about-button">
+            About
+          </button>
+        </div>
         <nav className="main-nav" aria-label="Main navigation">
           <NavLink to="/" end>
             <Compass size={15} />
@@ -141,10 +143,6 @@ export default function App() {
             Saved<span className="nav-count">{saved.length}</span>
           </NavLink>
         </nav>
-        <button className="demo-label" onClick={() => setAbout(true)}>
-          <span className="status-dot" />
-          Demo workspace
-        </button>
       </header>
       <Routes>
         <Route path="/" element={<Discover />} />
@@ -174,7 +172,7 @@ export default function App() {
       </Routes>
       <footer className="footer">
         <span>
-          <span className="small-logo">p</span> Signals before the story.
+          <span className="small-logo">∇</span> Signals before the story.
         </span>
         <span>
           Fictional demo data <span className="footer-dot">·</span> No live
@@ -187,7 +185,7 @@ export default function App() {
       <Dialog
         open={about}
         onOpenChange={setAbout}
-        title="A preview of Pull"
+        title="A preview of Gradient"
         description="Explore the sourcing workflow using a fictional AI infrastructure scenario."
       >
         <div className="dialog-body">
@@ -249,22 +247,7 @@ function Discover() {
   }
   return (
     <main className="discovery">
-      <div className="hero-eyebrow">
-        <span className="spark-icon">
-          <Sparkles size={13} />
-        </span>{' '}
-        DEMAND-DRIVEN VENTURE INTELLIGENCE
-      </div>
-      <h1>
-        Find your next
-        <br />
-        <span>founder conversation.</span>
-      </h1>
-      <p className="hero-description">
-        Great companies start with a problem someone needs solved.
-        <br className="desktop-break" /> Find the builders already pulling
-        people toward an answer.
-      </p>
+      <h1>Gradient</h1>
       <form
         className="search-panel"
         onSubmit={(event) => {
@@ -695,7 +678,7 @@ function Brief({
     )
     const anchor = document.createElement('a')
     anchor.href = url
-    anchor.download = `pull-${item.id}-demo-brief.md`
+    anchor.download = `gradient-${item.id}-demo-brief.md`
     anchor.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
   }

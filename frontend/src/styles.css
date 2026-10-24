@@ -102,12 +102,29 @@ svg {
 .topbar {
   height: 84px;
   border-bottom: 1px solid var(--line);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   justify-content: space-between;
   padding: 0 4%;
   background: #fcfdfa;
   gap: 20px;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.about-button {
+  padding: 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: white;
+  color: #727a6e;
+  font-size: 12px;
+}
+.about-button:hover {
+  background: #f0f2ed;
 }
 .brand {
   display: flex;
@@ -126,19 +143,10 @@ svg {
   color: white;
   font-family: Georgia, serif;
   font-weight: bold;
-  font-size: 33px;
-  line-height: 27px;
+  font-size: 26px;
+  line-height: 33px;
   text-align: center;
   position: relative;
-}
-.brand-mark > span {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #bfdda9;
-  right: 5px;
-  top: 6px;
 }
 .brand-divider {
   height: 15px;
@@ -178,17 +186,7 @@ svg {
   border-radius: 4px;
   padding: 0 4px;
 }
-.demo-label {
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  border: 1px solid #dce4d5;
-  border-radius: 20px;
-  padding: 7px 11px;
-  color: #617356;
-  background: #f2f6ed;
-}
+
 .status-dot {
   width: 5px;
   height: 5px;
@@ -203,25 +201,7 @@ svg {
   flex: 1;
   padding: 89px 0 60px;
 }
-.hero-eyebrow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  font-family: monospace;
-  font-size: 10px;
-  letter-spacing: 1.7px;
-  color: #63715d;
-}
-.spark-icon {
-  width: 23px;
-  height: 23px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #d6e2ce;
-  border-radius: 50%;
-  background: #eef4e8;
-}
+
 .discovery h1 {
   text-align: center;
   font-size: clamp(40px, 4.5vw, 64px);
@@ -230,15 +210,7 @@ svg {
   margin: 24px 0 20px;
   font-weight: 500;
 }
-.discovery h1 > span {
-  color: #7d8976;
-}
-.hero-description {
-  text-align: center;
-  font-size: 15px;
-  line-height: 1.8;
-  color: #80877c;
-}
+
 .search-panel {
   max-width: 840px;
   margin: 37px auto 0;
@@ -1267,7 +1239,6 @@ svg {
   }
 }
 @media (max-width: 1000px) {
-  .brand .eyebrow,
   .brand-divider {
     display: none;
   }
@@ -1310,6 +1281,7 @@ svg {
 }
 @media (max-width: 760px) {
   .topbar {
+    display: flex;
     height: auto;
     min-height: 72px;
     padding: 14px 20px;
@@ -1319,10 +1291,7 @@ svg {
   .brand {
     order: 0;
   }
-  .demo-label {
-    order: 1;
-    margin-left: auto;
-  }
+
   .main-nav {
     order: 2;
     width: 100%;
@@ -1336,17 +1305,12 @@ svg {
     width: calc(100% - 40px);
     padding: 50px 0 40px;
   }
-  .hero-eyebrow {
-    font-size: 8px;
-    letter-spacing: 1px;
-  }
+
   .discovery h1 {
     font-size: 43px;
     letter-spacing: -2px;
   }
-  .hero-description {
-    font-size: 13px;
-  }
+
   .search-panel {
     padding: 20px 18px 16px;
   }
@@ -1554,9 +1518,6 @@ svg {
   }
   .research-progress {
     margin-top: -15px;
-  }
-  .desktop-break {
-    display: none;
   }
 }
 @media (max-width: 390px) {

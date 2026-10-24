@@ -3,9 +3,9 @@ import { mkdir, readFile } from 'node:fs/promises'
 import { chromium } from 'playwright'
 
 // Requires the dev server. Uses an isolated context, never a personal browser profile.
-const baseURL = process.env.PULL_PREVIEW_URL ?? 'http://127.0.0.1:5173'
+const baseURL = process.env.GRADIENT_PREVIEW_URL ?? 'http://127.0.0.1:5173'
 const browser = await chromium.launch({
-  channel: process.env.PULL_BROWSER_CHANNEL ?? 'chrome',
+  channel: process.env.GRADIENT_BROWSER_CHANNEL ?? 'chrome',
   headless: true,
 })
 const context = await browser.newContext({
@@ -30,9 +30,7 @@ async function checkWidth() {
 try {
   const response = await page.goto(baseURL)
   assert.equal(response.status(), 200)
-  await page
-    .getByRole('heading', { name: 'Find your next founder conversation.' })
-    .waitFor()
+  await page.getByRole('heading', { name: 'Gradient', exact: true }).waitFor()
   await screenshot('discovery-desktop')
   await checkWidth()
   await page
@@ -79,7 +77,7 @@ try {
   const downloadPromise = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Export brief' }).click()
   const download = await downloadPromise
-  assert.equal(download.suggestedFilename(), 'pull-tracenest-demo-brief.md')
+  assert.equal(download.suggestedFilename(), 'gradient-tracenest-demo-brief.md')
   assert.match(
     await readFile(await download.path(), 'utf8'),
     /FICTIONAL DEMO — NOT VERIFIED RESEARCH/,

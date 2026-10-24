@@ -1,8 +1,8 @@
-# Pull
+# Gradient
 
 **Find early technical founders through evidence of customer demand.**
 
-Pull is a sourcing assistant for pre-seed investors in AI infrastructure and developer tools. It connects public user problems to projects, their builders, and commercial context, then produces a short, evidence-backed explanation of why an investor should meet a builder now.
+Gradient is a sourcing assistant for pre-seed investors in AI infrastructure and developer tools. It connects public user problems to projects, their builders, and commercial context, then produces a short, evidence-backed explanation of why an investor should meet a builder now.
 
 Built for **Track 1: Sourcing** at [Deal Flow: NYC's First VC Hackathon](https://nyc-vc-hack.devpost.com/).
 
@@ -14,7 +14,7 @@ An investor enters a thesis:
 
 > Find early builders developing tools for testing and monitoring AI agents.
 
-Pull discovers relevant public projects, examines user demand, researches competitors, and returns three founder opportunities. Each brief includes:
+Gradient discovers relevant public projects, examines user demand, researches competitors, and returns three founder opportunities. Each brief includes:
 
 - The builder and what they have shipped.
 - Specific demand evidence with source links and dates.
