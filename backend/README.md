@@ -4,7 +4,13 @@ Modular source collection for Peter's single-process backend plan. Each source i
 
 **Implemented:** GitHub public repository/issue/comment collection, Akta news/company adapters, source registration, bounded scheduling, per-source outcomes, progress callbacks, evidence normalization/deduplication, and a FastAPI collection endpoint.
 
-**Not implemented:** Nicrron reasoning, the LangGraph Scout/Market/Verifier graph, Roundtable persistence, PRISM tracing/evaluation, website crawling, durable jobs, authentication, or frontend wiring. The current response has `phase: "collection"` and empty `briefs`. A complete collection is not a completed investment recommendation. No missing integration is simulated as successful.
+**Not implemented:** Nicrron reasoning, the LangGraph Scout/Market/Verifier graph, Roundtable persistence, PRISM tracing/evaluation, website crawling, durable jobs, authentication, or durable shared workspaces. The current response has `phase: "collection"` and empty `briefs`. A complete collection is not a completed investment recommendation. No missing integration is simulated as successful.
+
+## Research module integration
+
+The separate research-module scheduler and frontend connection are implemented in `gradient/integration/`. Peter supplies Scout/Market/Verifier implementations; the integration collects their typed outputs, validates references, combines them into opportunities, and serves progress, partial results, cancellation and briefs. See [the module handoff](../docs/MODULE_INTEGRATION.md) for the contract, ownership split, registration, API routes and explicit synthetic test harness. Without registered implementations, modules report unavailable.
+
+The collection endpoint below retains its original behavior and is not the endpoint used by the new research UI.
 
 ## Local setup
 

@@ -150,3 +150,61 @@ describe('sourcing workflow', () => {
     expect(await screen.findByText('Builder not found.')).toBeTruthy()
   })
 })
+
+describe('research module integration', () => {
+  it('starts a real API run and displays module failures without demo fallback', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ run_id: 'test-run' }),
+      })
+      .mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          run_id: 'test-run',
+          thesis: 'Replay',
+          mode: 'live',
+          status: 'partial',
+          opportunity_count: 0,
+          modules: [
+            {
+              name: 'market',
+              label: 'Market research',
+              role: 'market',
+              status: 'failed',
+              message: 'Provider unavailable',
+            },
+          ],
+          warnings: [],
+        }),
+      })
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+    mount()
+    await user.click(screen.getByRole('button', { name: 'Research modules' }))
+    await user.type(screen.getByRole('textbox'), 'Replay')
+    await user.click(screen.getByRole('button', { name: 'Find opportunities' }))
+    await screen.findByText('Provider unavailable')
+    expect(fetchMock.mock.calls[0][0]).toContain('/api/runs')
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({
+      thesis: 'Replay',
+    })
+    expect(screen.queryByText('SIMULATED RESEARCH')).toBeNull()
+    expect(screen.queryByText('Maya Chen')).toBeNull()
+  })
+
+  it('shows API failure instead of substituting fictional opportunities', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 404,
+        json: async () => ({ detail: 'Run expired. Start a new search.' }),
+      }),
+    )
+    mount('/shortlist?run=expired')
+    await screen.findByText('Run expired. Start a new search.')
+    expect(screen.queryByText('Maya Chen')).toBeNull()
+  })
+})

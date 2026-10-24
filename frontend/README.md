@@ -33,8 +33,10 @@ For a browser smoke check, keep `npm run dev` running in another terminal and ru
 
 ## Connect the backend
 
-`src/lib/api.ts` is the demo data boundary; replace its functions with authenticated FastAPI calls described in `../docs/ARCHITECTURE.md`. Query keys and routes are already separated from fixtures. Replace the simulated search timer in `Discover` with run creation and progress polling when those endpoints exist. Move saved opportunities to workspace-scoped API storage when authentication is available.
+`src/lib/api.ts` supports both local demo fixtures and the research-module API. Select **Research modules** to start a real backend run, inspect per-module progress and view assembled shortlist/brief results. Set `VITE_API_URL` (default `http://127.0.0.1:8000`). API failures never fall back to demo data. See [the integration handoff](../docs/MODULE_INTEGRATION.md) for backend setup and `npm run test:integration`.
 
-`src/data/opportunities.ts` contains entirely synthetic data. All searches return the same three example builders. There are no sponsor calls, live searches, verified people, external evidence URLs, or shared accounts. Never add sponsor API secrets to browser code or `VITE_*` variables.
+Saved links remain local to this browser. Server runs expire after one hour, restart, or capacity eviction; export briefs for a retained copy. Workspace-scoped persistent storage and authentication remain pending.
+
+`src/data/opportunities.ts` contains entirely synthetic data. Demo-mode searches return the same three example builders and make no sponsor calls. Research mode uses the configured backend; live discovery requires Peter’s registered research implementations. Shared accounts are not implemented. Never add sponsor API secrets to browser code or `VITE_*` variables.
 
 Static hosting must rewrite non-asset paths to `index.html` for React Router deep links. `vercel.json` supplies this when `frontend/` is selected as the Vercel project root. The backend remains a separate service.

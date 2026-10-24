@@ -1,5 +1,7 @@
 # Gradient architecture
 
+> Implementation update: the research-module contract, run coordinator, opportunity assembler and frontend API flow are now implemented. See [Module integration](MODULE_INTEGRATION.md). Peter owns the research implementations and sponsor workflows; the default registry remains unavailable until those are registered. The broader persistence/authentication design below is still planned.
+
 > **Scope:** This document describes the broader proposed system. The current single-process demo and agent graph are specified in [Backend design](BACKEND_DESIGN.md).
 
 > **Status: frontend demo and backend collection layer implemented.** The frontend still uses synthetic fixtures. `backend/gradient/` now provides source adapters, a bounded async coordinator, evidence grouping, and a FastAPI collection endpoint. The database, research-agent graph, Roundtable/PRISM integrations, and deployments remain proposed. See [backend implementation and limits](../backend/README.md) and [frontend behavior](../frontend/README.md).

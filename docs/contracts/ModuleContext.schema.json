@@ -1,0 +1,408 @@
+{
+  "$defs": {
+    "Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "project": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Project",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "handle": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Handle"
+        },
+        "category": {
+          "default": "Unclassified",
+          "maxLength": 200,
+          "title": "Category",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "project",
+        "evidence_ids"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    },
+    "Citation": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "candidate_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "url": {
+          "format": "uri",
+          "maxLength": 2083,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "excerpt": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        },
+        "source": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "Observed",
+            "Self-reported",
+            "Provider summary"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "author": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Author"
+        },
+        "date": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date"
+        },
+        "limitation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Limitation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "candidate_id",
+        "url",
+        "title",
+        "excerpt",
+        "source",
+        "kind",
+        "limitation"
+      ],
+      "title": "Citation",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "candidate_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "field": {
+          "enum": [
+            "description",
+            "demand",
+            "trigger",
+            "thesis",
+            "uncertainty",
+            "market"
+          ],
+          "title": "Field",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "candidate_id",
+        "field",
+        "text"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "ModuleOutput": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "module_id": {
+          "title": "Module Id",
+          "type": "string"
+        },
+        "status": {
+          "default": "complete",
+          "enum": [
+            "complete",
+            "partial"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "candidates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Candidate"
+          },
+          "maxItems": 20,
+          "title": "Candidates",
+          "type": "array"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 100,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "findings": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "maxItems": 100,
+          "title": "Findings",
+          "type": "array"
+        },
+        "reviews": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Review"
+          },
+          "maxItems": 20,
+          "title": "Reviews",
+          "type": "array"
+        },
+        "warnings": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Warnings",
+          "type": "array"
+        },
+        "integration_refs": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "maxProperties": 20,
+          "title": "Integration Refs",
+          "type": "object"
+        }
+      },
+      "required": [
+        "run_id",
+        "module_id"
+      ],
+      "title": "ModuleOutput",
+      "type": "object"
+    },
+    "Review": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "recommendation": {
+          "enum": [
+            "Worth a conversation",
+            "Needs validation",
+            "Watch"
+          ],
+          "title": "Recommendation",
+          "type": "string"
+        },
+        "accepted_finding_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Accepted Finding Ids",
+          "type": "array"
+        },
+        "rejected_finding_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Rejected Finding Ids",
+          "type": "array"
+        },
+        "unknowns": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Unknowns",
+          "type": "array"
+        },
+        "questions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Questions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "recommendation",
+        "accepted_finding_ids"
+      ],
+      "title": "Review",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "thesis": {
+      "title": "Thesis",
+      "type": "string"
+    },
+    "outputs": {
+      "items": {
+        "$ref": "#/$defs/ModuleOutput"
+      },
+      "title": "Outputs",
+      "type": "array"
+    },
+    "module_states": {
+      "additionalProperties": {
+        "enum": [
+          "queued",
+          "running",
+          "complete",
+          "partial",
+          "failed",
+          "timed_out",
+          "unavailable",
+          "cancelled"
+        ],
+        "type": "string"
+      },
+      "title": "Module States",
+      "type": "object"
+    }
+  },
+  "required": [
+    "run_id",
+    "thesis",
+    "outputs",
+    "module_states"
+  ],
+  "title": "ModuleContext",
+  "type": "object"
+}

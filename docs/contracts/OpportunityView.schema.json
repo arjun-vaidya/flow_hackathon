@@ -1,0 +1,242 @@
+{
+  "$defs": {
+    "OpportunityEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "author": {
+          "title": "Author",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "date": {
+          "title": "Date",
+          "type": "string"
+        },
+        "interpretation": {
+          "title": "Interpretation",
+          "type": "string"
+        },
+        "limitation": {
+          "title": "Limitation",
+          "type": "string"
+        },
+        "sourceUrl": {
+          "format": "uri",
+          "maxLength": 2083,
+          "minLength": 1,
+          "title": "Sourceurl",
+          "type": "string"
+        },
+        "isDemo": {
+          "title": "Isdemo",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "quote",
+        "kind",
+        "author",
+        "source",
+        "date",
+        "interpretation",
+        "limitation",
+        "sourceUrl",
+        "isDemo"
+      ],
+      "title": "OpportunityEvidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "runId": {
+      "title": "Runid",
+      "type": "string"
+    },
+    "candidateId": {
+      "title": "Candidateid",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "initials": {
+      "title": "Initials",
+      "type": "string"
+    },
+    "project": {
+      "title": "Project",
+      "type": "string"
+    },
+    "handle": {
+      "title": "Handle",
+      "type": "string"
+    },
+    "recommendation": {
+      "enum": [
+        "Worth a conversation",
+        "Needs validation",
+        "Watch"
+      ],
+      "title": "Recommendation",
+      "type": "string"
+    },
+    "category": {
+      "title": "Category",
+      "type": "string"
+    },
+    "description": {
+      "title": "Description",
+      "type": "string"
+    },
+    "demand": {
+      "title": "Demand",
+      "type": "string"
+    },
+    "trigger": {
+      "title": "Trigger",
+      "type": "string"
+    },
+    "uncertainty": {
+      "title": "Uncertainty",
+      "type": "string"
+    },
+    "thesis": {
+      "title": "Thesis",
+      "type": "string"
+    },
+    "market": {
+      "title": "Market",
+      "type": "string"
+    },
+    "participants": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Participants"
+    },
+    "hosting": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Hosting"
+    },
+    "payment": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Payment"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/OpportunityEvidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Questions",
+      "type": "array"
+    },
+    "activity": {
+      "default": [],
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Activity",
+      "type": "array"
+    },
+    "isDemo": {
+      "title": "Isdemo",
+      "type": "boolean"
+    },
+    "reviewStatus": {
+      "enum": [
+        "pending",
+        "reviewed",
+        "conflicted"
+      ],
+      "title": "Reviewstatus",
+      "type": "string"
+    },
+    "modules": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Modules",
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "runId",
+    "candidateId",
+    "name",
+    "initials",
+    "project",
+    "handle",
+    "recommendation",
+    "category",
+    "description",
+    "demand",
+    "trigger",
+    "uncertainty",
+    "thesis",
+    "market",
+    "evidence",
+    "questions",
+    "isDemo",
+    "reviewStatus",
+    "modules"
+  ],
+  "title": "OpportunityView",
+  "type": "object"
+}

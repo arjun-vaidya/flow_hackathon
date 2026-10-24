@@ -1614,3 +1614,52 @@ svg {
     scroll-behavior: auto !important;
   }
 }
+
+.mode-tabs {
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+.module-progress-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border, #dfe3da);
+}
+.module-progress-row p {
+  margin: 0.5rem 0 0;
+}
+
+.brief-main,
+.brief-sidebar {
+  min-width: 0;
+}
+.metric-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.metric-grid strong {
+  overflow-wrap: anywhere;
+}
+.run-page .research-progress {
+  margin: 20px 0;
+  max-width: none;
+}
+.run-page .button-group {
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.run-page .note-box {
+  overflow-wrap: anywhere;
+}
+.module-progress-row > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .metric-grid strong {
+    font-size: 18px;
+  }
+  .run-page .source-tag {
+    flex-shrink: 0;
+  }
+}

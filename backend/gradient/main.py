@@ -11,6 +11,9 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from gradient.coordinator import ResearchCoordinator
+from gradient.integration.registry import ModuleRegistry, load_modules
+from gradient.integration.routes import router as integration_router
+from gradient.integration.service import RunManager
 from gradient.models import ResearchResult, RunLimits, SourceRequest
 from gradient.research import EvidenceOrganizer, ResultOrganizer
 from gradient.sources.akta import AktaSource
@@ -35,6 +38,7 @@ def create_app(
     registry: SourceRegistry | None = None,
     limits: RunLimits | None = None,
     organizer_factory: Callable[[], ResultOrganizer] = EvidenceOrganizer,
+    modules: ModuleRegistry | None = None,
 ) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
@@ -48,9 +52,14 @@ def create_app(
                 AktaSource(client, os.getenv("AKTA_API_KEY")),
             )
             app.state.run_lock = asyncio.Lock()
-            yield
+            app.state.modules = RunManager(modules or load_modules())
+            try:
+                yield
+            finally:
+                await app.state.modules.close()
 
     app = FastAPI(title="Gradient research collection", version="0.1.0", lifespan=lifespan)
+    app.include_router(integration_router)
     origins = os.getenv("FRONTEND_ORIGINS", "http://127.0.0.1:5173,http://localhost:5173")
     app.add_middleware(
         CORSMiddleware,

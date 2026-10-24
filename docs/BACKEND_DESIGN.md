@@ -40,7 +40,7 @@ Send actual model exchanges to [PRISM](https://blockconvey.com/docs) under `sess
 | `GET /api/sources` | Registered sources, operations, and credential availability. |
 | `POST /api/research` | Accept `{thesis}`; return `run_id, status, briefs, evidence, integration_refs, warnings`. |
 
-The current endpoint returns `phase: collection`, grouped evidence, source outcomes, and an event history. `briefs` and `integration_refs` remain empty until the research/sponsor stages are connected. `complete` currently means collection completed, not that three briefs exist. A useful partial collection returns HTTP 200 with warnings; 502/504 apply when no source produced a useful outcome. Frontend connection is pending.
+The current endpoint returns `phase: collection`, grouped evidence, source outcomes, and an event history. `briefs` and `integration_refs` remain empty until the research/sponsor stages are connected. `complete` currently means collection completed, not that three briefs exist. A useful partial collection returns HTTP 200 with warnings; 502/504 apply when no source produced a useful outcome. The frontend now connects through the separate `/api/runs` module integration API; see [the module handoff](MODULE_INTEGRATION.md). Peter still owns the research implementations.
 
 Each brief contains builder/project, demand, thesis fit, timing, alternatives, unknowns, and meeting questions. Return fewer than three as `partial`; provider failure returns 502 and deadline expiry 504.
 

@@ -4,7 +4,9 @@ export type Evidence = {
   id: string
   title: string
   quote: string
-  kind: 'Observed' | 'Self-reported'
+  kind: 'Observed' | 'Self-reported' | 'Provider summary'
+  sourceUrl?: string
+  isDemo?: boolean
   author: string
   source: string
   date: string
@@ -24,9 +26,13 @@ export type Opportunity = {
   trigger: string
   uncertainty: string
   thesis: string
-  participants: number
-  hosting: number
-  payment: number
+  runId?: string
+  isDemo?: boolean
+  reviewStatus?: string
+  market?: string
+  participants: number | null
+  hosting: number | null
+  payment: number | null
   evidence: Evidence[]
   questions: string[]
   activity: { month: string; contributions: number }[]

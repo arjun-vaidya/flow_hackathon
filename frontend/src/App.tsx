@@ -31,6 +31,7 @@ import {
   X,
 } from 'lucide-react'
 import { Dialog } from './components/ui/dialog'
+import ResearchRun from './components/ResearchRun'
 import { api, readSaved } from './lib/api'
 import type {
   Evidence,
@@ -95,10 +96,21 @@ export default function App() {
   const [saved, setSaved] = useState<string[]>(readSaved)
   const [notice, setNotice] = useState('')
   const [about, setAbout] = useState(false)
+  const [lastRun, setLastRun] = useState<string>()
   const location = useLocation()
   useEffect(() => {
     window.scrollTo?.(0, 0)
-  }, [location.pathname])
+    const queryRun = new URLSearchParams(location.search).get('run')
+    const pathRun = location.pathname.startsWith('/runs/')
+      ? location.pathname.split('/')[2]
+      : undefined
+    const briefId = location.pathname.startsWith('/builders/')
+      ? decodeURIComponent(location.pathname.split('/')[2])
+      : ''
+    if (queryRun || pathRun || briefId.includes(':'))
+      setLastRun(queryRun ?? pathRun ?? briefId.split(':')[0])
+    else if (location.pathname === '/shortlist') setLastRun(undefined)
+  }, [location.pathname, location.search])
   useEffect(() => {
     if (notice) {
       const timer = setTimeout(() => setNotice(''), 4000)
@@ -129,7 +141,7 @@ export default function App() {
             <Compass size={15} />
             Discover
           </NavLink>
-          <NavLink to="/shortlist">
+          <NavLink to={lastRun ? `/shortlist?run=${lastRun}` : '/shortlist'}>
             <Layers3 size={15} />
             Shortlist
           </NavLink>
@@ -141,6 +153,7 @@ export default function App() {
       </header>
       <Routes>
         <Route path="/" element={<Discover />} />
+        <Route path="/runs/:runId" element={<ResearchRun />} />
         <Route
           path="/shortlist"
           element={<Shortlist saved={saved} toggle={toggle} />}
@@ -228,7 +241,7 @@ export default function App() {
           </span>
           <span className="footer-status">
             <span className="status-dot" />
-            Fictional demo data · No live research connected
+            Demo and module research · Source availability varies
           </span>
           <a
             href="https://github.com/arjun-vaidya/flow_hackathon/issues"
@@ -244,18 +257,20 @@ export default function App() {
         open={about}
         onOpenChange={setAbout}
         title="A preview of Gradient"
-        description="Explore the sourcing workflow using a fictional AI infrastructure scenario."
+        description="Demo scenarios and connected research have separate data sources."
       >
         <div className="dialog-body">
           <p>
-            All builders, projects, quotes, and metrics in this workspace are
-            synthetic. Searches return the same three example builders,
-            regardless of your thesis.
+            Demo mode uses three fictional builders for every thesis. Research
+            modules mode starts a backend run and displays only the outputs
+            returned by registered modules, with citations and unresolved
+            questions.
           </p>
           <p>
-            Saving works in this browser. Research, company enrichment,
-            authentication, and shared workspaces will become available when the
-            backend is connected.
+            Saved links stay in this browser. Module runs are currently held in
+            memory: they expire after one hour, server restart, or capacity
+            eviction. Export a brief to keep a copy. Authentication and shared
+            workspaces are not connected.
           </p>
           <div className="integration-grid">
             {[
@@ -290,6 +305,9 @@ export default function App() {
 
 function Discover() {
   const [thesis, setThesis] = useState('')
+  const [mode, setMode] = useState('demo')
+  const [starting, setStarting] = useState(false)
+  const [startError, setStartError] = useState('')
   const [step, setStep] = useState<number | null>(null)
   const navigate = useNavigate()
   useEffect(() => {
@@ -300,8 +318,26 @@ function Discover() {
     }, 650)
     return () => clearTimeout(timer)
   }, [step, thesis, navigate])
-  function start() {
-    if (thesis.trim() && step === null) setStep(0)
+  async function start() {
+    if (!thesis.trim() || step !== null || starting) return
+    if (mode === 'demo') {
+      setStep(0)
+      return
+    }
+    setStarting(true)
+    setStartError('')
+    try {
+      const run = await api.startRun(thesis.trim())
+      navigate(`/runs/${run.run_id}`)
+    } catch (error) {
+      setStartError(
+        error instanceof Error
+          ? error.message
+          : 'Cannot connect to research server.',
+      )
+    } finally {
+      setStarting(false)
+    }
   }
   return (
     <main className="discovery">
@@ -309,6 +345,29 @@ function Discover() {
         <h1>Gradient</h1>
         <p className="brand-subtitle">VENTURE INTELLIGENCE</p>
       </div>
+      <div className="filter-tabs mode-tabs" aria-label="Research mode">
+        <button
+          disabled={starting || step !== null}
+          aria-pressed={mode === 'demo'}
+          className={mode === 'demo' ? 'active' : ''}
+          onClick={() => setMode('demo')}
+        >
+          Demo
+        </button>
+        <button
+          disabled={starting || step !== null}
+          aria-pressed={mode === 'modules'}
+          className={mode === 'modules' ? 'active' : ''}
+          onClick={() => setMode('modules')}
+        >
+          Research modules
+        </button>
+      </div>
+      {startError && (
+        <p className="note-box" role="alert">
+          {startError}
+        </p>
+      )}
       <form
         className="search-panel"
         onSubmit={(event) => {
@@ -327,7 +386,7 @@ function Discover() {
             placeholder="e.g. Tools for testing and monitoring AI agents"
             maxLength={500}
             value={thesis}
-            disabled={step !== null}
+            disabled={step !== null || starting}
             onChange={(event) => setThesis(event.target.value)}
             onKeyDown={(event) => {
               if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
@@ -344,12 +403,12 @@ function Discover() {
           </span>
           <button
             className="button primary"
-            disabled={!thesis.trim() || step !== null}
+            disabled={!thesis.trim() || step !== null || starting}
           >
-            {step !== null ? (
+            {step !== null || starting ? (
               <>
                 <LoaderCircle className="spin" size={16} />
-                Exploring demo…
+                {starting ? 'Starting research…' : 'Exploring demo…'}
               </>
             ) : (
               <>
@@ -364,7 +423,7 @@ function Discover() {
         <span>Try a thesis</span>
         {topics.map((topic) => (
           <button
-            disabled={step !== null}
+            disabled={step !== null || starting}
             key={topic}
             onClick={() => setThesis(topic)}
           >
@@ -422,19 +481,51 @@ function Shortlist({
   toggle: (id: string) => void
   savedOnly?: boolean
 }) {
+  const location = useLocation()
+  const runId = new URLSearchParams(location.search).get('run') ?? undefined
+  const { data: run } = useQuery({
+    queryKey: ['run', runId],
+    queryFn: () => api.getRun(runId!),
+    enabled: !!runId,
+    refetchInterval: (query) =>
+      ['queued', 'running'].includes(query.state.data?.status ?? '')
+        ? 700
+        : false,
+    retry: false,
+  })
   const {
-    data = [],
+    data: result,
     isPending,
     isError,
+    error,
     refetch,
-  } = useQuery({ queryKey: ['opportunities'], queryFn: api.listOpportunities })
+  } = useQuery({
+    queryKey: ['opportunities', runId, savedOnly ? saved : null],
+    queryFn: async () =>
+      savedOnly
+        ? api.listSaved(saved)
+        : {
+            items: await api.listOpportunities(runId),
+            unavailable: [] as string[],
+          },
+    refetchInterval:
+      runId && (!run || ['queued', 'running'].includes(run.status))
+        ? 1500
+        : false,
+    retry: false,
+  })
+  const data = result?.items ?? []
+  useEffect(() => {
+    if (run && !['queued', 'running'].includes(run.status)) void refetch()
+  }, [run?.status, refetch])
   const [filter, setFilter] = useState('All recommendations')
   const [selected, setSelected] = useState<string[]>([])
   const [comparing, setComparing] = useState(false)
   const [evidence, setEvidence] = useState<Evidence | null>(null)
-  const location = useLocation()
   const thesis =
-    new URLSearchParams(location.search).get('thesis') || 'AI agent monitoring'
+    new URLSearchParams(location.search).get('thesis') ||
+    run?.thesis ||
+    (runId ? 'Research results' : 'AI agent monitoring')
   const available = data.filter((item) => !savedOnly || saved.includes(item.id))
   const visible = available.filter(
     (item) =>
@@ -479,16 +570,44 @@ function Shortlist({
           {savedOnly ? 'Saved opportunities' : thesis}
         </span>
         <span className="result-count">{available.length} opportunities</span>
-        <span className="demo-inline">DEMO DATA</span>
+        <span className="demo-inline">
+          {runId
+            ? run?.mode === 'demo'
+              ? 'SYNTHETIC MODULE RESULTS'
+              : 'MODULE RESULTS'
+            : savedOnly
+              ? 'SAVED RESEARCH'
+              : 'DEMO DATA'}
+        </span>
         <Link to="/" className="text-button">
           Edit thesis
           <SlidersHorizontal size={14} />
         </Link>
       </div>
-      {!savedOnly && (
+      {!savedOnly && !runId && (
         <p className="fixture-note">
           Example AI infrastructure results · this preview uses the same
           fictional builders for every thesis.
+        </p>
+      )}
+      {runId && (
+        <p className="fixture-note">
+          <Link to={`/runs/${runId}`}>View module progress and warnings</Link> ·
+          Results update as modules finish.
+        </p>
+      )}
+      {result?.unavailable.map((id) => (
+        <p className="note-box" key={id}>
+          Saved brief unavailable: the run may have expired or the server is
+          offline.
+          <button className="text-button" onClick={() => toggle(id)}>
+            Remove saved link
+          </button>
+        </p>
+      ))}
+      {error && (
+        <p role="alert" className="note-box">
+          {error.message}
         </p>
       )}
       <div className="filter-tabs" aria-label="Filter recommendations">
@@ -526,7 +645,9 @@ function Shortlist({
           text={
             savedOnly && available.length === 0
               ? 'Save a builder from the shortlist to keep their brief here.'
-              : 'Choose another recommendation filter to see more builders.'
+              : runId
+                ? 'Modules have not supplied a matching, cited builder yet. Check module progress for details.'
+                : 'Choose another recommendation filter to see more builders.'
           }
         />
       ) : (
@@ -546,12 +667,18 @@ function Shortlist({
                   <p>
                     <Github size={12} />
                     {item.handle}
-                    <span>·</span>Public maintainer in demo
+                    <span>·</span>
+                    {item.runId
+                      ? `Review: ${item.reviewStatus}`
+                      : 'Public maintainer in demo'}
                   </p>
                 </div>
                 <Badge value={item.recommendation} />
                 <SaveButton item={item} saved={saved} toggle={toggle} compact />
               </div>
+              {item.isDemo && (
+                <p className="fixture-note">Synthetic integration fixture</p>
+              )}
               <p className="opportunity-description">{item.description}</p>
               <div className="signal-grid">
                 <div>
@@ -638,7 +765,7 @@ function Shortlist({
         open={comparing}
         onOpenChange={setComparing}
         title="Two builders, side by side"
-        description="Compare the evidence and what you would need to learn next. All data is fictional."
+        description="Compare the evidence, its limitations, and what you would need to learn next."
         wide
       >
         <div className="comparison-grid">
@@ -683,7 +810,11 @@ function EvidenceDialog({
         if (!open) close()
       }}
       title={evidence?.title ?? 'Evidence'}
-      description="Synthetic source excerpt · created to demonstrate the evidence review workflow."
+      description={
+        evidence?.sourceUrl
+          ? 'Source excerpt supplied by a research module. Inspect the original and its limitations.'
+          : 'Synthetic source excerpt · created to demonstrate the evidence review workflow.'
+      }
     >
       {evidence && (
         <div className="dialog-body">
@@ -700,8 +831,14 @@ function EvidenceDialog({
           <h3>What it doesn’t establish</h3>
           <p>{evidence.limitation}</p>
           <div className="note-box">
-            This is a fictional excerpt, with no external source URL. Live
-            evidence will link to its original source.
+            {evidence.sourceUrl ? (
+              <a href={evidence.sourceUrl} target="_blank" rel="noreferrer">
+                Open original source ↗
+              </a>
+            ) : (
+              'This is a fictional excerpt, with no external source URL.'
+            )}
+            {evidence.isDemo && ' Synthetic integration fixture.'}
           </div>
         </div>
       )}
@@ -717,15 +854,35 @@ function Brief({
   toggle: (id: string) => void
 }) {
   const { id = '' } = useParams()
+  const runId = id.includes(':') ? id.split(':')[0] : undefined
+  const { data: run } = useQuery({
+    queryKey: ['run', runId],
+    queryFn: () => api.getRun(runId!),
+    enabled: !!runId,
+    refetchInterval: (query) =>
+      ['queued', 'running'].includes(query.state.data?.status ?? '')
+        ? 700
+        : false,
+    retry: false,
+  })
   const {
     data: item,
     isPending,
     isError,
+    error: briefError,
     refetch,
   } = useQuery({
     queryKey: ['opportunity', id],
     queryFn: () => api.getOpportunity(id),
+    refetchInterval:
+      runId && (!run || ['queued', 'running'].includes(run.status))
+        ? 1500
+        : false,
+    retry: false,
   })
+  useEffect(() => {
+    if (run && !['queued', 'running'].includes(run.status)) void refetch()
+  }, [run?.status, refetch])
   const [evidence, setEvidence] = useState<Evidence | null>(null)
   const [kind, setKind] = useState('All evidence')
   useEffect(() => {
@@ -733,13 +890,13 @@ function Brief({
   }, [id])
   function download() {
     if (!item) return
-    const content = `# ${item.project} — ${item.name}\n\nFICTIONAL DEMO — NOT VERIFIED RESEARCH\n\nRecommendation: ${item.recommendation}\n\n${item.thesis}\n\n## Demand\n${item.demand}\n\n## Why now\n${item.trigger}\n\n## Unknown\n${item.uncertainty}\n\n## Evidence (synthetic)\n${item.evidence.map((source) => `### ${source.title}\n${source.source} · ${source.date} · ${source.kind}\n\n> ${source.quote}\n\nInterpretation: ${source.interpretation}\nLimitation: ${source.limitation}`).join('\n\n')}\n\n## Meeting questions\n${item.questions.map((question) => `- ${question}`).join('\n')}`
+    const content = `# ${item.project} — ${item.name}\n\n${item.runId && !item.isDemo ? `MODULE RESEARCH — REVIEW: ${item.reviewStatus}` : 'FICTIONAL DEMO — NOT VERIFIED RESEARCH'}\n\nRecommendation: ${item.recommendation}\n\n${item.thesis}\n\n## Demand\n${item.demand}\n\n## Why now\n${item.trigger}\n\n## Unknown\n${item.uncertainty}\n\n## Evidence${item.runId && !item.isDemo ? '' : ' (synthetic)'}\n${item.evidence.map((source) => `### ${source.title}\n${source.source} · ${source.date} · ${source.kind}\n\n> ${source.quote}\n\nInterpretation: ${source.interpretation}\nLimitation: ${source.limitation}\nSource: ${source.sourceUrl ?? 'Synthetic fixture'}`).join('\n\n')}\n\n## Meeting questions\n${item.questions.map((question) => `- ${question}`).join('\n')}`
     const url = URL.createObjectURL(
       new Blob([content], { type: 'text/markdown' }),
     )
     const anchor = document.createElement('a')
     anchor.href = url
-    anchor.download = `gradient-${item.id}-demo-brief.md`
+    anchor.download = `gradient-${item.id.replaceAll(':', '-')}-${item.runId ? 'research' : 'demo'}-brief.md`
     anchor.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
@@ -753,6 +910,7 @@ function Brief({
     return (
       <main className="page empty-state">
         <h2>Couldn’t load this brief.</h2>
+        <p>{briefError?.message}</p>
         <button className="button primary" onClick={() => refetch()}>
           Try again
         </button>
@@ -763,14 +921,14 @@ function Brief({
       <main className="page">
         <Empty
           title="Builder not found."
-          text="Explore the shortlist to open an available demo brief."
+          text="Explore the shortlist to open an available brief."
         />
       </main>
     )
   return (
     <main className="page brief-page">
       <div className="breadcrumb">
-        <Link to="/shortlist">
+        <Link to={item.runId ? `/shortlist?run=${item.runId}` : '/shortlist'}>
           <ArrowLeft size={12} />
           Opportunities
         </Link>
@@ -782,7 +940,12 @@ function Brief({
       <div className="page-heading brief-heading">
         <div>
           <div className="eyebrow">
-            BUILDER BRIEF <span className="demo-inline">DEMO DATA</span>
+            BUILDER BRIEF{' '}
+            <span className="demo-inline">
+              {item.runId && !item.isDemo
+                ? `REVIEW: ${item.reviewStatus}`
+                : 'DEMO DATA'}
+            </span>
           </div>
           <h1>
             {item.project}
@@ -834,7 +997,11 @@ function Brief({
           <section className="brief-section">
             <div className="section-heading">
               <h2>Demand, in their words.</h2>
-              <span className="eyebrow">SYNTHETIC · LAST 90 DAYS</span>
+              <span className="eyebrow">
+                {item.runId && !item.isDemo
+                  ? 'MODULE EVIDENCE'
+                  : 'SYNTHETIC · LAST 90 DAYS'}
+              </span>
             </div>
             <p className="muted">
               Look for a problem that repeats, and people asking for a better
@@ -842,24 +1009,42 @@ function Brief({
             </p>
             <div className="metric-grid">
               <div>
-                <strong>{String(item.participants).padStart(2, '0')}</strong>
+                <strong>
+                  {item.participants === null
+                    ? 'Unknown'
+                    : String(item.participants).padStart(2, '0')}
+                </strong>
                 <span>Public participants</span>
               </div>
               <div>
-                <strong>{String(item.hosting).padStart(2, '0')}</strong>
+                <strong>
+                  {item.hosting === null
+                    ? 'Unknown'
+                    : String(item.hosting).padStart(2, '0')}
+                </strong>
                 <span>Hosting requests</span>
               </div>
               <div>
-                <strong>{String(item.payment).padStart(2, '0')}</strong>
+                <strong>
+                  {item.payment === null
+                    ? 'Unknown'
+                    : String(item.payment).padStart(2, '0')}
+                </strong>
                 <span>Stated willingness to pay</span>
               </div>
             </div>
             <p className="metric-note">
-              Illustrative counts. Categories overlap; willingness to pay is not
-              revenue.
+              {item.runId
+                ? 'Unknown counts have not been established by the research modules.'
+                : 'Illustrative counts. Categories overlap; willingness to pay is not revenue.'}
             </p>
             <div className="filter-tabs compact">
-              {['All evidence', 'Self-reported', 'Observed'].map((label) => (
+              {[
+                'All evidence',
+                'Self-reported',
+                'Observed',
+                'Provider summary',
+              ].map((label) => (
                 <button
                   key={label}
                   className={kind === label ? 'active' : ''}
@@ -900,42 +1085,52 @@ function Brief({
                 (source) => kind === 'All evidence' || source.kind === kind,
               ) && (
                 <p className="note-box">
-                  No {kind.toLowerCase()} evidence in this demo brief.
+                  No {kind.toLowerCase()} evidence in this brief.
                 </p>
               )}
             </div>
           </section>
-          <section className="brief-section">
-            <div className="section-heading">
-              <h2>A builder who keeps shipping.</h2>
-              <span className="eyebrow">ILLUSTRATIVE ACTIVITY</span>
-            </div>
-            <p className="muted">
-              Development activity is context, not proof of adoption.
-            </p>
-            <Suspense
-              fallback={<p className="muted">Loading activity chart…</p>}
-            >
-              <ActivityChart activity={item.activity} />
-            </Suspense>
-          </section>
+          {item.activity.length > 0 && (
+            <section className="brief-section">
+              <div className="section-heading">
+                <h2>A builder who keeps shipping.</h2>
+                <span className="eyebrow">ILLUSTRATIVE ACTIVITY</span>
+              </div>
+              <p className="muted">
+                Development activity is context, not proof of adoption.
+              </p>
+              <Suspense
+                fallback={<p className="muted">Loading activity chart…</p>}
+              >
+                <ActivityChart activity={item.activity} />
+              </Suspense>
+            </section>
+          )}
           <section className="brief-section">
             <div className="section-heading">
               <h2>The market question.</h2>
-              <span className="source-tag">Research pending</span>
+              <span className="source-tag">
+                {item.runId
+                  ? `Review: ${item.reviewStatus}`
+                  : 'Research pending'}
+              </span>
             </div>
             <p className="muted">
-              Company and competitor enrichment will appear here once connected.
-              No competitive advantage has been verified.
+              {item.market ??
+                'Company and competitor enrichment will appear here once connected. No competitive advantage has been verified.'}
             </p>
-            <div className="market-row">
-              <span>Existing observability and evaluation platforms</span>
-              <span>Compare workflow depth</span>
-            </div>
-            <div className="market-row">
-              <span>Internal scripts and self-hosted tools</span>
-              <span>Validate switching pain</span>
-            </div>
+            {!item.runId && (
+              <>
+                <div className="market-row">
+                  <span>Existing observability and evaluation platforms</span>
+                  <span>Compare workflow depth</span>
+                </div>
+                <div className="market-row">
+                  <span>Internal scripts and self-hosted tools</span>
+                  <span>Validate switching pain</span>
+                </div>
+              </>
+            )}
           </section>
           <section className="brief-section questions" id="meeting-questions">
             <span className="eyebrow">MAKE THE FIRST CONVERSATION COUNT</span>
@@ -954,7 +1149,11 @@ function Brief({
               {item.initials}
             </div>
             <h2>{item.name}</h2>
-            <p>Project maintainer · fictional profile</p>
+            <p>
+              {item.runId
+                ? 'Identity supplied by discovery module'
+                : 'Project maintainer · fictional profile'}
+            </p>
             <div className="profile-handle">
               <Github size={15} />
               {item.handle}
@@ -962,7 +1161,9 @@ function Brief({
             <dl>
               <div>
                 <dt>Project relationship</dt>
-                <dd>Maintainer in demo</dd>
+                <dd>
+                  {item.runId ? 'See identity evidence' : 'Maintainer in demo'}
+                </dd>
               </div>
               <div>
                 <dt>Company role</dt>

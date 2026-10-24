@@ -6,7 +6,7 @@ Gradient is a sourcing assistant for pre-seed investors in AI infrastructure and
 
 Built for **Track 1: Sourcing** at [Deal Flow: NYC's First VC Hackathon](https://nyc-vc-hack.devpost.com/).
 
-> **Status: frontend demo + backend collection layer.** The React app in `frontend/` uses clearly labeled fictional data. The Python backend in `backend/` implements modular GitHub/Akta source adapters, concurrent collection, evidence grouping, and a collection API. Frontend wiring, research agents, Roundtable/PRISM integrations, and real evaluations remain pending. Example frontend outputs are not verified investment leads.
+> **Status: frontend + research-module integration.** The app supports a fictional demo and a backend research mode with module progress, partial results, citations and briefs. Arjun’s integration layer is implemented; Peter’s research modules and live sponsor workflows remain pending. Default modules report unavailable. The separate GitHub/Akta collection utilities remain available. See [the module handoff](docs/MODULE_INTEGRATION.md).
 
 ## The product
 
@@ -40,6 +40,7 @@ Every sponsor must be used in the working project. Akta's adapter is implemented
 - [Product design and build checklist](docs/PROJECT_PLAN.md)
 - [Architecture: stack, data flow, APIs, database, and deployment](docs/ARCHITECTURE.md)
 - [Backend setup, source plug-ins, and collection API](backend/README.md)
+- [Research-module handoff: ownership, contract and frontend integration](docs/MODULE_INTEGRATION.md)
 - [Peter's backend design and demo scope](docs/BACKEND_DESIGN.md)
 - [Organizer's problem tracks](docs/Deal%20Flow_%20Problem%20Tracks.md)
 - [Local requirements excerpt](docs/hackathon_requirements.txt)
