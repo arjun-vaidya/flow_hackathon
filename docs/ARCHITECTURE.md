@@ -1,5 +1,7 @@
 # Pull architecture
 
+> **Scope:** This document describes the broader proposed system. The current single-process demo and agent graph are specified in [Backend design](BACKEND_DESIGN.md).
+
 > **Status: proposed design, not an implemented system.** The `frontend/` directory is currently empty. No application services, database, sponsor connections, or deployments have been provisioned. This document is the implementation contract for the team.
 
 Pull turns an investor's thesis into a shortlist of technical builders with evidence of user demand, commercial context, and questions for a first meeting. See the [product plan](PROJECT_PLAN.md) for positioning and event requirements.
@@ -58,7 +60,7 @@ Keep filters and selections in React state or the URL; a separate global state l
 
 Proposed hosting: Vercel for the static frontend, Railway for the API and worker, and Supabase for PostgreSQL and authentication. Hosting accounts, limits, and deployment configuration must be verified before use.
 
-Use one worker initially, with PostgreSQL as the job queue. Add a dedicated queue only when concurrency or throughput requires it. A vector database, graph database, and agent framework are not initial dependencies; relational links are enough to render the evidence map.
+Use one worker initially, with PostgreSQL as the job queue. Add a dedicated queue only when concurrency or throughput requires it. The demo's LangGraph handles agent control flow; relational links remain sufficient for the evidence map.
 
 ## Screen-to-data mapping
 

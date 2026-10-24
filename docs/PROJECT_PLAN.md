@@ -30,15 +30,19 @@ Investor guidance supports investigating adoption and community engagement beyon
 
 ## Agent responsibilities and sponsor roles
 
-Our backend controls execution. Roundtable is the shared workspace and communication channel; Nicrron supplies the model calls. PRISM observes and evaluates the workflow.
+The demo uses three tool-calling agents in one LangGraph StateGraph. Each has role-specific instructions, restricted tools, run-local history, and structured output. Agents choose source queries; code validates results, controls graph transitions, and enforces budgets. [Backend design and agent graph](BACKEND_DESIGN.md) owns the demo's execution limits and API.
 
-| Agent | Inputs | Output | Handoff |
-| --- | --- | --- | --- |
-| Scout | Thesis and public project data | Candidate and evidence files | Sends candidate tasks and source references through Roundtable. |
-| Market researcher | Candidate evidence and company context | Competitor analysis, relevant news, commercial unknowns | Uses Akta and updates the shared candidate file. |
-| Verifier | Candidate, research, and original sources | Supported claims, rejected claims, unresolved questions | Records corrections and a new brief version through Roundtable. |
+| Agent | Functional responsibility and tools | Structured result |
+| --- | --- | --- |
+| Scout | Interpret the thesis, choose GitHub searches, and inspect project demand and explicit builder links. | Candidates, sourced demand, identity uncertainty. |
+| Market Researcher | Choose Akta company, competitor, and news queries to assess commercial alternatives and contrary evidence. | Attributed commercial context and unknowns. |
+| Verifier | Read evidence by ID, reread permitted original sources, assess claim support, and request a targeted Scout or Market Researcher repair. | Claim reviews and an optional research request. |
 
-Route each agent's model calls through Nicrron. Send trace identifiers and evaluation results to PRISM. Check each sponsor's actual SDK and account access before committing to implementation details.
+First pass: Scout → Market Researcher → Verifier → code router. The router sends at most one targeted repair to Scout or Market Researcher, then returns directly to Verifier. Final code checks citation references, deduplicates source/account IDs, and ranks reviewed candidates. Unresolved claims become unknown or are omitted when the repair allowance is spent. Model review remains fallible.
+
+Shared graph state contains thesis/criteria, candidates, evidence, reviews, artifact references, and remaining budgets. Roundtable stores versioned agent outputs and task messages; downstream agents read the recorded predecessor version. All model calls use Nicrron. PRISM receives actual exchanges with shared run/session identity plus agent and graph-version labels.
+
+Verify tool-capable model support, sponsor APIs, and account access before implementation.
 
 ## Evidence contract
 
@@ -113,7 +117,7 @@ Additional useful evaluations: every factual claim has a supporting source; miss
 - [ ] Manually assemble one useful, sourced brief to define the target output.
 - [ ] Implement thesis parsing and reproducible public project discovery.
 - [ ] Collect and normalize evidence with source dates and provenance.
-- [ ] Connect Scout, Market researcher, and Verifier through Roundtable.
+- [ ] Build the Scout, Market Researcher, and Verifier agent graph with Roundtable handoffs and bounded repair routing.
 - [ ] Integrate Akta company and competitor research.
 - [ ] Instrument and evaluate the workflow with PRISM.
 - [ ] Build the three screens around the working pipeline.
