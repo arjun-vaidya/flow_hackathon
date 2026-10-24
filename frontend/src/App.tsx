@@ -971,18 +971,22 @@ function Brief({
               THE INVESTMENT QUESTION
             </div>
             <h2>
-              {item.recommendation === 'Worth a conversation'
-                ? 'The users are asking. Is there a company here?'
-                : item.recommendation === 'Needs validation'
-                  ? 'There is interest. Is the problem recurring?'
-                  : 'A relevant problem. A distinct answer?'}
+              {item.runId && item.reviewStatus !== 'reviewed'
+                ? 'What does the evidence establish?'
+                : item.recommendation === 'Worth a conversation'
+                  ? 'The users are asking. Is there a company here?'
+                  : item.recommendation === 'Needs validation'
+                    ? 'There is interest. Is the problem recurring?'
+                    : 'A relevant problem. A distinct answer?'}
             </h2>
             <p>{item.thesis}</p>
             <Badge value={item.recommendation} />
           </section>
           <div className="brief-reasons">
             <article>
-              <span className="eyebrow">WHY IT FITS</span>
+              <span className="eyebrow">
+                {item.runId ? 'PROJECT DESCRIPTION' : 'WHY IT FITS'}
+              </span>
               <p>{item.description}</p>
             </article>
             <article>
@@ -996,7 +1000,11 @@ function Brief({
           </div>
           <section className="brief-section">
             <div className="section-heading">
-              <h2>Demand, in their words.</h2>
+              <h2>
+                {item.runId && item.reviewStatus !== 'reviewed'
+                  ? 'Sources awaiting review.'
+                  : 'Demand, in their words.'}
+              </h2>
               <span className="eyebrow">
                 {item.runId && !item.isDemo
                   ? 'MODULE EVIDENCE'

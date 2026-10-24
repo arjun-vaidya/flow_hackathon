@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:browser": "node scripts/check-browser.mjs",
     "format": "prettier --write src scripts index.html vite.config.ts tsconfig.json components.json package.json vercel.json README.md",
-    "test:integration": "node scripts/check-integration.mjs"
+    "test:integration": "node scripts/check-integration.mjs",
+    "test:live-scout": "node scripts/check-live-scout.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",

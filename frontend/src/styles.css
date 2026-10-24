@@ -1663,3 +1663,8 @@ svg {
     flex-shrink: 0;
   }
 }
+
+.evidence-card p,
+.dialog-body blockquote {
+  overflow-wrap: anywhere;
+}

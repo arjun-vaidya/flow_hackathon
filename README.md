@@ -6,7 +6,7 @@ Gradient is a sourcing assistant for pre-seed investors in AI infrastructure and
 
 Built for **Track 1: Sourcing** at [Deal Flow: NYC's First VC Hackathon](https://nyc-vc-hack.devpost.com/).
 
-> **Status: frontend + research-module integration.** The app supports a fictional demo and a backend research mode with module progress, partial results, citations and briefs. Arjun’s integration layer is implemented; Peter’s research modules and live sponsor workflows remain pending. Default modules report unavailable. The separate GitHub/Akta collection utilities remain available. See [the module handoff](docs/MODULE_INTEGRATION.md).
+> **Status: frontend + research-module integration.** The app supports a fictional demo and a backend research mode with module progress, partial results, citations and briefs. Arjun’s integration layer is implemented; A basic GitHub Scout can supply real repository and discussion evidence; Peter’s deeper research modules and live sponsor workflows remain pending. Default modules report unavailable. The separate GitHub/Akta collection utilities remain available. See [the module handoff](docs/MODULE_INTEGRATION.md).
 
 ## The product
 

@@ -87,6 +87,21 @@ Run storage is in memory: at most 20 runs, one-hour TTL from creation, lost on r
 
 Unknown/expired/withheld resources return 404. Run status can be queued, running, complete, partial, failed, timed_out or cancelled. An empty but successfully researched result can be complete. Completion means execution completed, not that an investment is validated. The UI does not substitute fixtures when API calls fail.
 
+## Basic real-data GitHub Scout
+
+A minimal test implementation is available in `gradient/modules/github_scout.py`. It reuses `GitHubSource` to search up to three public repositories and collect up to three recent issue/comment excerpts per repository. It maps them into the shared module contract, with no model calls or sponsor usage. Repository owner handles are preserved, but founder names, customer demand, thesis fit, company status and investment recommendations remain unverified. Market and Verifier stay unavailable.
+
+From the repository root:
+
+```sh
+GRADIENT_MODULE_FACTORY=gradient.modules.github_scout:build_modules \
+  backend/.venv/bin/uvicorn gradient.main:app --host 127.0.0.1 --port 8000
+```
+
+Select **Research modules** in the UI and try `repo:langfuse/langfuse` or `agent observability`. The input is literal GitHub search syntax (maximum 256 characters), not a natural-language research plan. An optional server-side `GITHUB_TOKEN` helps with public API limits. Empty results and rate limits are reported explicitly; failed issue retrieval retains repository evidence. Outputs remain provisional and the overall run is partial because research/review is incomplete.
+
+With the frontend and this factory running, `npm run test:live-scout` from `frontend/` tests the complete UI flow against public GitHub data. Unlike the fixture test, this opt-in smoke check depends on network access and GitHub availability and does not run in the default unit suite.
+
 ## Local integration check
 
 Start the normal API and frontend from the repository root:

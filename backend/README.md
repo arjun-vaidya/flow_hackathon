@@ -8,7 +8,7 @@ Modular source collection for Peter's single-process backend plan. Each source i
 
 ## Research module integration
 
-The separate research-module scheduler and frontend connection are implemented in `gradient/integration/`. Peter supplies Scout/Market/Verifier implementations; the integration collects their typed outputs, validates references, combines them into opportunities, and serves progress, partial results, cancellation and briefs. See [the module handoff](../docs/MODULE_INTEGRATION.md) for the contract, ownership split, registration, API routes and explicit synthetic test harness. Without registered implementations, modules report unavailable.
+The separate research-module scheduler and frontend connection are implemented in `gradient/integration/`. Peter supplies Scout/Market/Verifier implementations; the integration collects their typed outputs, validates references, combines them into opportunities, and serves progress, partial results, cancellation and briefs. See [the module handoff](../docs/MODULE_INTEGRATION.md) for the contract, ownership split, registration, API routes and explicit synthetic test harness. Without registered implementations, modules report unavailable. A basic real-data GitHub Scout is available via `GRADIENT_MODULE_FACTORY=gradient.modules.github_scout:build_modules`; it performs literal repository search and preserves citations without claiming verified founder identity or demand.
 
 The collection endpoint below retains its original behavior and is not the endpoint used by the new research UI.
 
