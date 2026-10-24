@@ -6,7 +6,7 @@ Gradient is a sourcing assistant for pre-seed investors in AI infrastructure and
 
 Built for **Track 1: Sourcing** at [Deal Flow: NYC's First VC Hackathon](https://nyc-vc-hack.devpost.com/).
 
-> **Status: frontend demo.** The React app in `frontend/` implements discovery, shortlisting, saved builders, evidence review, and builder briefs with clearly labeled fictional data. Backend services, sponsor integrations, and real evaluations are still planned. Example outputs are illustrative, not verified investment leads.
+> **Status: frontend demo + backend collection layer.** The React app in `frontend/` uses clearly labeled fictional data. The Python backend in `backend/` implements modular GitHub/Akta source adapters, concurrent collection, evidence grouping, and a collection API. Frontend wiring, research agents, Roundtable/PRISM integrations, and real evaluations remain pending. Example frontend outputs are not verified investment leads.
 
 ## The product
 
@@ -33,12 +33,14 @@ The core question is **“Which builder should this investor meet this week, and
 | Roundtable | Shared evidence files, version history, and task messages between our scouting, research, and verification agents. Use the sponsor's workspace described in the [event resources](https://nyc-vc-hack.devpost.com/resources), not unrelated products with the same name. |
 | [PRISM by Block Convey](https://blockconvey.com/docs) | Traces, evaluations, failure investigation, and comparison of corrected behavior on fixed inputs. |
 
-Every sponsor must be used in the working project. These are planned responsibilities, not completed integrations.
+Every sponsor must be used in the working project. Akta's adapter is implemented and tested against mocked responses; live sponsor verification and the other integrations remain pending.
 
 ## Read the plan
 
 - [Product design and build checklist](docs/PROJECT_PLAN.md)
 - [Architecture: stack, data flow, APIs, database, and deployment](docs/ARCHITECTURE.md)
+- [Backend setup, source plug-ins, and collection API](backend/README.md)
+- [Peter's backend design and demo scope](docs/BACKEND_DESIGN.md)
 - [Organizer's problem tracks](docs/Deal%20Flow_%20Problem%20Tracks.md)
 - [Local requirements excerpt](docs/hackathon_requirements.txt)
 - [Official requirements](https://nyc-vc-hack.devpost.com/), [rules](https://nyc-vc-hack.devpost.com/rules), and [sponsor resources](https://nyc-vc-hack.devpost.com/resources)

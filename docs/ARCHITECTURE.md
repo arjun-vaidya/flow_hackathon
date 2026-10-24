@@ -2,7 +2,7 @@
 
 > **Scope:** This document describes the broader proposed system. The current single-process demo and agent graph are specified in [Backend design](BACKEND_DESIGN.md).
 
-> **Status: frontend demo implemented; backend architecture proposed.** The `frontend/` directory contains a React application with synthetic fixtures, local saved builders, and simulated research. No backend services, database, sponsor connections, or deployments have been provisioned. This document remains the implementation contract for the full system; see `frontend/README.md` for current frontend behavior.
+> **Status: frontend demo and backend collection layer implemented.** The frontend still uses synthetic fixtures. `backend/gradient/` now provides source adapters, a bounded async coordinator, evidence grouping, and a FastAPI collection endpoint. The database, research-agent graph, Roundtable/PRISM integrations, and deployments remain proposed. See [backend implementation and limits](../backend/README.md) and [frontend behavior](../frontend/README.md).
 
 Gradient turns an investor's thesis into a shortlist of technical builders with evidence of user demand, commercial context, and questions for a first meeting. See the [product plan](PROJECT_PLAN.md) for positioning and event requirements.
 

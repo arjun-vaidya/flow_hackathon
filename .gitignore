@@ -25,6 +25,8 @@ __pycache__/
 *.log
 *.tsbuildinfo
 test-results/
+*.egg-info/
+.ruff_cache/
 
 # Private or local runtime data
 data/private/
