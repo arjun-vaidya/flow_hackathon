@@ -1,0 +1,30 @@
+# Secrets and local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.credentials/
+
+# Local tooling and generated files
+.DS_Store
+.idea/
+.vscode/
+.codex/
+.agents/
+node_modules/
+.next/
+dist/
+build/
+coverage/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.log
+
+# Private or local runtime data
+data/private/
+data/local/
+tmp/

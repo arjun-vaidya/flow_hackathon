@@ -1,0 +1,6 @@
+What to Build
+A working product that solves the core workflow for the customer in your track. It must be built on October 24 and demoed live to the judges. Research, interviews, designs and synthetic data can be prepared beforehand, but all code is written on build day.
+
+Every project must use all four required sponsor tools: NicrronNinoo, PRISM by Block Convey, akta.pro by Wokelo AI and Roundtable. Projects that don't use all four are not eligible for prizes.
+
+Best Use of External Data goes to the team that gets the most out of the Akta API.
