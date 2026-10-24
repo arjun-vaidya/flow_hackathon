@@ -1,54 +1,54 @@
 # Pull: backend design
 
-**Proposed agent graph.** Turn an investor thesis into three sourced builder briefs using the [required sponsors](../README.md#required-sponsor-integrations).
+**Proposed demo scope.** Turn an investor thesis into three builder briefs backed by public demand evidence and commercial context, using every [required sponsor](../README.md#required-sponsor-integrations).
 
-## 1. Agent graph
+## 1. Architecture
 
-FastAPI invokes one [LangGraph StateGraph](https://docs.langchain.com/oss/python/langgraph/graph-api). Agents have separate instructions, restricted tools, message histories, and validated outputs. A model through [Nicrron](https://www.nicrron.ai/docs/api) chooses queries and permitted tools.
+One Python process runs FastAPI and the research pipeline. The proposed connections below separate public sources, model inference, shared research, and tracing.
 
 ```mermaid
-flowchart LR
-    Scout["Scout"] -->|"candidates"| Market["Market Researcher"]
-    Market -->|"context"| Verify["Verifier"]
-    Scout -->|"repair"| Verify
-    Verify -->|"reviews"| Route{"Code router"}
-    Route -->|"demand gap"| Scout
-    Route -->|"market gap"| Market
-    Route -->|"complete or stop"| Output["Check, rank, respond"]
+flowchart TB
+    UI["Investor browser"] <-->|"HTTP / JSON"| API
+    subgraph VM["VM dev / pvd-dev-232"]
+        API["FastAPI"] -->|"validated thesis"| Roundtable[("Roundtable")]
+    end
+    Roundtable <-->|"public evidence"| GitHub["GitHub REST"]
+    Roundtable <-->|"company / news"| Akta["Akta"]
+    Roundtable <-->|"model calls"| Nicrron["Nicrron / Ninoo"]
+    Roundtable -->|"model exchanges"| PRISM["PRISM"]
 ```
 
-The router reads Verifier's request; repaired Scout results return directly to Verifier. After one repair, unresolved claims become unknown or are omitted.
+FastAPI serves the browser; the pipeline owns external calls. Request memory holds intermediate data; Roundtable retains shared artifact versions.
 
-## 2. Functional ownership
+**Deployment target:** GCP `pvd-dev-232/us-central1-a/dev`, instance `8034442951099769107`; IAP SSH user `pvd2112_columbia_edu`.
 
-| Agent | Decisions and tools | Output |
-| --- | --- | --- |
-| Scout | Choose GitHub searches; inspect repositories, issues/comments, and public maintainer links. | Candidates, demand evidence, identity uncertainty. |
-| Market Researcher | Choose Akta company, competitor, and news queries; investigate commercial alternatives. | Attributed market context, contrary evidence, unknowns. |
-| Verifier | Read evidence by ID; reread allowed GitHub/Akta sources; assess claim support and request targeted research. | Claim reviews and an optional Scout/Market research request. |
+## 2. Research mechanism
 
-Code validates citations, deduplicates evidence/accounts, enforces routing limits, and ranks reviewed candidates by thesis fit, distinct demand accounts, and recency. Verifier's judgments remain fallible.
+[Nicrron](https://www.nicrron.ai/docs/api) interprets the thesis. GitHub supplies repositories, README text, issues, comments, and explicitly linked maintainer profiles. Scout extracts demand evidence and writes a Roundtable task/file. Market Researcher reads that artifact, adds [Akta](https://docs.akta.pro/llms.txt) company, competitor, and news context, then hands it to Verifier. Verifier reads the revised artifact, checks claims against excerpts, and writes ranked briefs. These roles are sequential functions.
 
-Shared state carries thesis/criteria, candidates, evidence, reviews, artifact references, and remaining budgets. Evidence retains URL, author, excerpt, event date, and collection time.
+Each evidence item carries a URL, author ID, excerpt, publication date when available, and collection time. Code rejects unresolved citations and deduplicates source/account IDs. Label self-reports and uncertain founder/customer relationships; preserve counter-evidence. Model verification remains fallible.
 
-Roundtable holds agent output versions and task messages; downstream agents read those versions. Graph state holds references and working copies. PRISM records actual model exchanges under `session_id=run_id`, labeled by agent and graph version.
+Send actual model exchanges to [PRISM](https://blockconvey.com/docs) under `session_id=run_id`; return trace and Roundtable version references.
 
-## 3. API and runtime
+## 3. API and code
 
-`POST /api/research` accepts `{thesis}`; returns `run_id, status, briefs, evidence, integration_refs, warnings`. `GET /healthz` reports process health. Briefs populate Shortlist and Founder Brief.
+| Endpoint | Contract |
+| --- | --- |
+| `GET /healthz` | Process health. |
+| `POST /api/research` | Accept `{thesis}`; return `run_id, status, briefs, evidence, integration_refs, warnings`. |
 
-Apply fixed discovery defaults: AI infrastructure/devtools, open-source projects, demand within 90 days, and publicly verifiable builder links. Return fewer supported opportunities as `partial`; provider failures return 502, deadline expiry 504.
+Each brief contains builder/project, demand, thesis fit, timing, alternatives, unknowns, and meeting questions. Return fewer than three as `partial`; provider failure returns 502 and deadline expiry 504.
 
-One Python process on `pvd-dev-232/us-central1-a/dev` (instance `8034442951099769107`), IAP user `pvd2112_columbia_edu`. Proposed files: `backend/main.py` for routes/models, `research.py` for graph/agents, `sources.py` for HTTPX tools. Credentials stay server-side.
+Use [FastAPI](https://fastapi.tiangolo.com/async/), Pydantic, and HTTPX. Proposed files: `backend/main.py` owns routes/models, `research.py` owns workflow/evidence rules, and `sources.py` owns provider calls. Keep credentials server-side.
 
-## 4. Bounds and acceptance
+## 4. Bounds and verification
 
-Cap runs at six repositories, ten issues/comments per repository, three model turns per agent invocation, one targeted repair, fifteen model calls total, and 120 seconds. Enforce 20-second provider timeouts and one active run; reject overlap with 429.
+Cap each run at six repositories, ten issues/comments per repository, four batched model calls, and 120 seconds. Use 20-second provider timeouts and one active run; reject overlap with 429.
 
-Keep one unit test for evidence rules; one parameterized graph/API integration test for success, repair routing/termination, and provider failure; one live smoke run for all sponsors and actual handoffs. Run Ruff, Pyrefly, and pytest.
+Keep one evidence-rule unit test, one API integration test covering success/provider failure, and one live smoke run proving all sponsors and Roundtable handoffs. Run Ruff, Pyrefly, and pytest.
 
-The 35-minute target assumes working sponsor access. Durable jobs, login, extra sources, and PRISM evaluation batches remain follow-on work.
+The 35-minute target assumes working sponsor access. Durable jobs, login, extra sources, and PRISM evaluation batches follow the demo.
 
 ## 5. Sources
 
-[Product plan](PROJECT_PLAN.md); broader [architecture](ARCHITECTURE.md); official graph/model documentation linked above. Proposed design, October 24, 2026.
+[Product plan](PROJECT_PLAN.md) and [architecture](ARCHITECTURE.md), inspected at `9fed94c`, October 24, 2026; sponsor and framework references linked above.
