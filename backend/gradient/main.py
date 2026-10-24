@@ -37,7 +37,7 @@ def create_app(
     organizer_factory: Callable[[], ResultOrganizer] = EvidenceOrganizer,
 ) -> FastAPI:
     @asynccontextmanager
-    async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
+    async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         async with httpx.AsyncClient(
             timeout=httpx.Timeout(20),
             follow_redirects=False,
